@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Literature Citation Finder</title>
+    <meta name="description" content="Paste a paragraph and get verified space research citations instantly.">
+    <link rel="stylesheet" href="styles.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <!-- html2pdf.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body class="text-size-medium">
+    
+    <header class="app-header">
+        <div class="header-container">
+            <div class="header-titles">
+                <h1 data-i18n="appTitle">Space Literature Citation Finder</h1>
+                <p data-i18n="appSubtitle">Paste a paragraph and get verified citations instantly.</p>
+            </div>
+            <div class="header-controls">
+                <!-- Topbar Utilities: Language Dropdown -->
+                <select id="language-select" aria-label="Select Language">
+                    <option value="cantonese">Cantonese</option>
+                    <option value="english" selected>English</option>
+                    <option value="french">French</option>
+                    <option value="german">German</option>
+                    <option value="greek">Greek</option>
+                    <option value="gujarati">Gujarati</option>
+                    <option value="hakka">Hakka</option>
+                    <option value="hebrew">Hebrew</option>
+                    <option value="hindi">Hindi</option>
+                    <option value="hungarian">Hungarian</option>
+                    <option value="italian">Italian</option>
+                    <option value="japanese">Japanese</option>
+                    <option value="malagasy">Malagasy</option>
+                    <option value="mandarin">Mandarin</option>
+                    <option value="marathi">Marathi</option>
+                    <option value="ndebele">Ndebele</option>
+                    <option value="pidgin_english">Pidgin English</option>
+                    <option value="portuguese">Portuguese</option>
+                    <option value="punjabi">Punjabi</option>
+                    <option value="serbian">Serbian</option>
+                    <option value="shona">Shona</option>
+                    <option value="spanish">Spanish</option>
+                    <option value="tamil">Tamil</option>
+                    <option value="telugu">Telugu</option>
+                    <option value="turkish">Turkish</option>
+                </select>
+
+                <!-- Accessibility Controls -->
+                <div class="acc-controls" role="group" aria-label="Accessibility Controls">
+                    <button id="btn-font-small" aria-label="Small font size" title="Small font size">A-</button>
+                    <button id="btn-font-medium" aria-label="Medium font size" title="Medium font size" class="active">A</button>
+                    <button id="btn-font-large" aria-label="Large font size" title="Large font size">A+</button>
+                    <button id="btn-theme-toggle" aria-label="Toggle light/dark mode" title="Toggle Theme">🌓</button>
+                </div>
+                <!-- Auth Container -->
+                <div id="auth-container">
+                    <button id="btn-google-signin" class="btn-secondary" aria-label="Sign in with Google" data-i18n="signIn">Sign In with Google</button>
+                    <div id="user-info" class="hidden">
+                        <span id="user-name"></span>
+                        <button id="btn-logout" class="btn-text" aria-label="Log out">Logout</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <section class="input-section" aria-labelledby="input-heading">
+            <h2 id="input-heading" class="sr-only">Input Paragraph</h2>
+            
+            <div class="textarea-wrapper">
+                <label for="paragraph-input" class="sr-only">Enter your research paragraph</label>
+                <textarea 
+                    id="paragraph-input" 
+                    data-i18n-placeholder="textareaPlaceholder"
+                    placeholder="Enter your space research, microgravity, or aerospace engineering paragraph here..." 
+                    aria-label="Enter your research paragraph"
+                    rows="6"></textarea>
+                
+                <div class="textarea-tools">
+                    <button id="btn-mic" class="btn-icon circle pulse-hover" aria-label="Dictate via Microphone" title="Dictate Text">🎤</button>
+                    <button id="btn-read-input" class="btn-icon circle" aria-label="Read paragraph aloud" title="Read Aloud">🔊</button>
+                </div>
+            </div>
+
+            <div class="action-bar">
+                <div class="primary-actions">
+                    <button id="btn-generate" class="btn-primary" aria-label="Generate Citations" data-i18n="btnGenerate">Generate Citations</button>
+                    <button id="btn-clear" class="btn-secondary" aria-label="Clear Paragraph" data-i18n="btnClear">Clear</button>
+                </div>
+                
+                <div class="secondary-actions">
+                    <button id="btn-copy-all" class="btn-secondary hidden" aria-label="Copy All Citations" data-i18n="btnCopyAll">Copy All</button>
+                    
+                    <div class="project-actions hidden" id="project-actions">
+                        <select id="project-select" aria-label="Select a project">
+                            <option value="" data-i18n="selectProject">Select Project...</option>
+                            <!-- Populated by JS -->
+                        </select>
+                        <button id="btn-add-to-project" class="btn-secondary" aria-label="Add Citations to Project" data-i18n="btnAddToProject">Add to Project</button>
+                        <button id="btn-create-project" class="btn-outline" aria-label="Create New Project" data-i18n="btnNewProject">+ New</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="notification-area" class="notification-area" role="status" aria-live="polite"></div>
+        </section>
+
+        <!-- Display toggles for Mock Array -->
+        <div id="results-controls" class="results-controls hidden">
+            <div class="format-toggle">
+                <label for="format-select"><span data-i18n="formatLabel">Format:</span></label>
+                <select id="format-select">
+                    <option value="APA">APA 7th</option>
+                    <option value="MLA">MLA 9th</option>
+                    <option value="Chicago">Chicago</option>
+                </select>
+            </div>
+            <div class="filter-toggle">
+                <label>
+                    <input type="checkbox" id="filter-biotech">
+                    <span data-i18n="filterBiotech">Space-Biotech Only</span>
+                </label>
+            </div>
+            <button id="btn-export-pdf" class="btn-outline" data-i18n="btnExportPdf">Export PDF Bibliography</button>
+        </div>
+
+        <section class="results-section hidden" id="results-section" aria-labelledby="results-heading">
+            <h2 id="results-heading" data-i18n="resultsHeading">Citations</h2>
+            <div id="citations-container" class="citations-grid">
+                <!-- Citation Cards Injected Here -->
+            </div>
+            
+            <div class="paragraph-results">
+                <h3 data-i18n="annotatedHeading">Annotated Paragraph</h3>
+                <div id="annotated-paragraph" class="annotated-box" aria-live="polite">
+                    <!-- Text with footnotes injected here -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="app-footer">
+        <p data-i18n="footerText1">Built with Antigravity 🚀</p>
+        <p data-i18n="footerText2">Space-Accessible Design • WCAG 2.2 AA</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script type="module" src="firebase.js"></script>
+    <script type="module" src="auth.js"></script>
+    <script type="module" src="projects.js"></script>
+    <script type="module" src="translations.js"></script>
+    <script type="module" src="script.js"></script>
+</body>
+</html>
