@@ -45,3 +45,19 @@ Because the application is built using vanilla HTML/CSS/JS, there is no build st
 - `firebase.js`: Firebase initialization logic.
 - `auth.js`: Logic for managing user state (Google login/logout).
 - `projects.js`: Firestore database calls to manage user collections.
+
+## AI Use Registry
+
+### Tools Used
+- **MS Copilot:** Antigravity Prompt Generation Optimization
+- **Gemini 3.1 Pro (High) Code Assist in Antigravity:** Code generation (HTML/CSS/JS)
+- **Gemini Nano Banana:** App Store Icon
+
+### Human Contributions
+- Project concept and design direction
+- API selection and integration testing
+- All content writing and fact-checking
+- Final visual polish and responsive testing
+
+### Verification Steps
+1. Tested on mobile and desktop browsers
