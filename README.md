@@ -5,8 +5,8 @@ A responsive, highly accessible web application designed to help researchers fin
 ## Features
 
 - **Space-Biotech Design**: Implements a dark/light mode toggle with cyan/navy space vibes.
-- **Accessibility First**: WCAG 2.2 AA compliant, no color-only reliance, keyboard navigable, and robust ARIA labels.
-- **Multilingual Support**: Cantonese, English, French, German, Greek, Gujarati, Hakka, Hebrew, Hindi, Hungarian, Italian, Japanese, Malagasy, Mandarin, Marathi, Ndebele, Pidgin English, Portuguese, Punjabi, Serbian, Shona, Spanish, Tamil, Telugu, and Turkish so far. 
+- **Accessibility First**: American Sign Language Interpreter Pop-up, WCAG 2.2 AA compliant, no color-only reliance, keyboard navigable, and robust ARIA labels.
+- **Multilingual Support**: American Sign Language, Cantonese, English, French, Galician, German, Greek, Gujarati, Hakka, Hebrew, Hindi, Hungarian, Italian, Japanese, Malagasy, Mandarin, Marathi, Martinique Creole, Ndebele, Pidgin English, Portuguese, Punjabi, Serbian, Shona, Spanish, Tamil, Telugu, and Turkish so far. 
 - **Web Speech API integration**: Read-aloud functionality for inputs and results.
 - **Font Resizing**: Real-time scalable typography elements (`A-`, `A`, `A+`) without zooming the entire browser.
 - **Firebase Integration**: 
